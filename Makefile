@@ -12,10 +12,8 @@ RM = rm -rf
 
 HEADERS = get_next_line.h
 
-SRC = ft_printf.c \
-	ft_print_words.c \
-	ft_print_numbers.c \
-	ft_print_pointers.c \
+SRC = get_next_line.c \
+	get_next_line_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
