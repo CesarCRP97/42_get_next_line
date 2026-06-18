@@ -1,12 +1,16 @@
-NAME = libftprintf.a
-LIBFT = libft/libft.a
+NAME = get_next_line
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+
+BUFFER_SIZE = 42
+BUFFLAGS = -D BUFFER_SIZE=$(BUFFER_SIZE)
+
 AR = ar
 ARFLAGS = rcs
 RM = rm -rf
 
-HEADERS = libft.h
+HEADERS = get_next_line.h
 
 SRC = ft_printf.c \
 	ft_print_words.c \
@@ -20,14 +24,7 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
-	@cp $(LIBFT) $(NAME)
-	@$(AR) $(ARFLAGS) $(NAME) $(OBJ)
-
-$(LIBFT):
-	@echo "\nAction: Compiling ... \n"
-	@$(MAKE) -C libft
-	@echo "\nSuccess: Compilation completed! \n"
+$(NAME): $(OBJ)
 
 clean:
 	@$(RM) $(OBJ)
@@ -38,14 +35,13 @@ fclean:
 	@$(RM) $(OBJ)
 	@$(RM) $(NAME)
 	@$(RM) tests
-	@$(MAKE) -C libft fclean
 	@echo "\nSuccess: All files cleaned \n"
 
 re: fclean all
 
 tests: re
 	@echo "\nAction: Compiling tests ... \n"
-	@$(CC) $(CFLAGS) -o tests main.c libftprintf.a
+	@$(CC) $(CFLAGS) $(BUFFLAGS) -o tests main.c $(SRC)
 	./tests
 
 .PHONY: all clean fclean re

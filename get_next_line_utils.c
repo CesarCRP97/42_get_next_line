@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cesar <cesar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:48:05 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/18 09:32:42 by cesar            ###   ########.fr       */
+/*   Updated: 2026/06/18 10:55:52 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,3 +37,18 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t			i;
+	unsigned char	*to_char;
+
+	i = 0;
+	to_char = (unsigned char *) s;
+	while (i < n)
+	{
+		to_char[i] = '\0';
+		i++;
+	}
+}
+
