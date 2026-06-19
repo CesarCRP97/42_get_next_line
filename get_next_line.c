@@ -6,69 +6,104 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:47:48 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/18 16:17:52 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/19 13:11:14 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// Make line
-
-// Join buffer and free previous buffer
-
-// Free all
-
-char	*get_joined_buffer(char *buffer, int fd)
+size_t	find_line_ending(char *str, size_t i)
 {
-	char	*temp;
-	long	i;
-	
-	if(buffer && ft_stchr(buffer, '\n'))
-		return (buffer);
-	temp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!temp)
-		return (NULL);
-	while (!ft_strchr(temp, '\n'))
-	{
-		i = read(fd, temp, BUFFER_SIZE);
-		if (i < 0 || (!i && !buffer))
-		{
-			free(buffer);
-			return (NULL);
-		}
-		if (!buffer)
-			buffer = ft_calloc(1, 1);
-		buffer = ft_strjoin(buffer, temp);
-		if (!buffer)
-			return (NULL);
-	}
-	return (buffer);
-	
+	while (str[i] && str[i] != '\n')
+		i++;
+	if (str[i] == '\n')
+		i++;
+	return (i);
 }
 
-/// @brief Reads a line from a file descriptor and returns it as a string.
-/// @param fd file descriptor to read from.
-/// @return The next line from the file descriptor, or NULL if there is an error
+char	*get_string(char *str)
+{
+	char	*new_str;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (str[i] == '\0')
+		return (free(str), NULL);
+	i = find_line_ending(str, i);
+	new_str = (char *)malloc((ft_strlen(str) - i + 1));
+	if (!new_str)
+		return (free(new_str), NULL);
+	while (str[i])
+		new_str[j++] = str[i++];
+	new_str[j] = '\0';
+	if (!new_str[0])
+		return (free(str), free(new_str), NULL);
+	free(str);
+	return (new_str);
+}
+
+char	*read_the_line(char *str)
+{
+	char	*line;
+	size_t	i;
+
+	i = 0;
+	if (!str || str[0] == '\0')
+		return (NULL);
+	i = find_line_ending(str, i);
+	line = (char *)malloc(sizeof(char) * i + 1);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (str[i] && str[i] != '\n')
+	{
+		line[i] = str[i];
+		i++;
+	}
+	if (str[i] == '\n')
+	{
+		line[i] = str[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
+}
+
+char	*free_and_null(char *buff1, char *buff2)
+{
+	free(buff1);
+	free(buff2);
+	buff2 = NULL;
+	return (0);
+}
+
 char	*get_next_line(int fd)
 {
-	static char		*residue;
-	char			*temp;
-	char			*next_line;
-	int				i;
-		
-	if (fd < 0 || BUFFER_SIZE < 1)
+	static char	*read_buffer;
+	char		*read_content;
+	int			read_bytes;
+
+	read_bytes = 1;
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
 		return (NULL);
-	temp = get_joined_buffer(residue, fd);
-	if (!temp)
+	read_content = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!read_content)
 		return (NULL);
-	i = 0;	
-	while (temp[i] != '\n' && temp[i])
-		i++;
-	if (temp[i] == '\n')
-		i++;
-	next_line = ft_substr(temp, 0, i - 1);
-	residue = ft_substr(temp, i, ft_strlen(temp) - i);
-	free(temp);
-	temp = NULL;
-	return (next_line);	
+	while (!(ft_strchr(read_buffer, '\n')) && read_bytes != 0)
+	{
+		read_bytes = read(fd, read_content, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			read_buffer = free_and_null(read_content, read_buffer);
+			return (NULL);
+		}
+		read_content[read_bytes] = '\0';
+		read_buffer = ft_strjoin(read_buffer, read_content);
+	}
+	free(read_content);
+	read_content = read_the_line(read_buffer);
+	read_buffer = get_string(read_buffer);
+	return (read_content);
 }
