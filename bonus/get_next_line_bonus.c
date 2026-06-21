@@ -6,12 +6,17 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 15:15:05 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/19 15:15:23 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 19:51:07 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
+/// @brief Standardized function to search the positions of the first '\n' 
+/// beginning in 'i'.
+/// @param str The string to search in.
+/// @param i The first position where to look.
+/// @return Position + 1 where the '\n' has been found.
 size_t	find_line_ending(char *str, size_t i)
 {
 	while (str[i] && str[i] != '\n')
@@ -21,62 +26,71 @@ size_t	find_line_ending(char *str, size_t i)
 	return (i);
 }
 
+/// @brief Given a string, creates a copy of everything but the first line of 
+/// the string. So first it detects where the first line ends, and copies from
+/// there.
+/// @param str String given
+/// @return A copy of the first line of 'str'
 char	*get_string(char *str)
 {
 	char	*new_str;
+	size_t	line_end;
 	size_t	i;
-	size_t	j;
 
-	i = 0;
-	j = 0;
-	if (str[i] == '\0')
+	if (!str || str[0] == '\0')
 		return (free(str), NULL);
-	i = find_line_ending(str, i);
-	new_str = (char *)malloc((ft_strlen(str) - i + 1));
+	line_end = find_line_ending(str, 0);
+	new_str = (char *)ft_calloc(sizeof(char), (ft_strlen(str) - line_end + 1));
 	if (!new_str)
 		return (free(new_str), NULL);
-	while (str[i])
-		new_str[j++] = str[i++];
-	new_str[j] = '\0';
-	if (!new_str[0])
-		return (free(str), free(new_str), NULL);
-	free(str);
-	return (new_str);
+	i = 0;
+	while (str[line_end])
+		new_str[i++] = str[line_end++];
+	return (free(str), new_str);
 }
 
+/// @brief Reads the first line from the 'str'.
+/// @param str string to search in.
+/// @return A copy of the first line of the 'str'.
 char	*read_the_line(char *str)
 {
 	char	*line;
+	size_t	line_end;
 	size_t	i;
 
-	i = 0;
+	line_end = 0;
 	if (!str || str[0] == '\0')
 		return (NULL);
-	i = find_line_ending(str, i);
-	line = (char *)malloc(sizeof(char) * i + 1);
+	line_end = find_line_ending(str, line_end);
+	line = (char *)ft_calloc(sizeof(char), line_end + 1);
 	if (!line)
 		return (NULL);
 	i = 0;
-	while (str[i] && str[i] != '\n')
+	while (i < line_end)
 	{
 		line[i] = str[i];
 		i++;
 	}
-	if (str[i] == '\n')
-	{
-		line[i] = str[i];
-		i++;
-	}
-	line[i] = '\0';
 	return (line);
 }
 
+/// @brief This function permits the release of to blocks of memory in one call.
+/// @param buff1 One buffer
+/// @param buff2 Other buffer
+/// @return Returns 0 so the static variable can have a 
 char	*free_and_null(char *buff1, char *buff2)
 {
-	free(buff1);
-	free(buff2);
-	buff2 = NULL;
-	return (0);
+	if (buff1)
+	{
+		free(buff1);
+		buff1 = NULL;
+	}
+	if (buff2)
+	{
+		free(buff2);
+		buff2 = NULL;
+	}
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -87,10 +101,10 @@ char	*get_next_line(int fd)
 
 	read_bytes = 1;
 	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
-		return (NULL);
-	read_content = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+		return (free(read_buffer), NULL);
+	read_content = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!read_content)
-		return (NULL);
+		return (free(read_buffer), NULL);
 	while (!(ft_strchr(read_buffer[fd], '\n')) && read_bytes != 0)
 	{
 		read_bytes = read(fd, read_content, BUFFER_SIZE);
