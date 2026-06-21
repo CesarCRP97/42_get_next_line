@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:47:48 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/21 20:18:19 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 20:23:15 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_string(char *str)
 	size_t	i;
 
 	if (!str || str[0] == '\0')
-		return (free(str), NULL);
+		return (free_and_null(str, NULL));
 	line_end = find_line_ending(str, 0);
 	new_str = (char *)ft_calloc(sizeof(char), (ft_strlen(str) - line_end + 1));
 	if (!new_str)
@@ -46,7 +46,7 @@ char	*get_string(char *str)
 	i = 0;
 	while (str[line_end])
 		new_str[i++] = str[line_end++];
-	return (free(str), new_str);
+	return (free_and_null(str, NULL), new_str);
 }
 
 /// @brief Reads the first line from the 'str'.
@@ -119,7 +119,7 @@ char	*get_next_line(int fd)
 		read_content[read_bytes] = '\0';
 		read_buffer = ft_strjoin(read_buffer, read_content);
 	}
-	free(read_content);
+	free_and_null(read_content, NULL);
 	read_content = read_the_line(read_buffer);
 	read_buffer = get_string(read_buffer);
 	return (read_content);
