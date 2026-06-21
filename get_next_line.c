@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:47:48 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/21 18:47:36 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 19:37:46 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ size_t	find_line_ending(char *str, size_t i)
 char	*get_string(char *str)
 {
 	char	*new_str;
+	size_t	line_end;
 	size_t	i;
-	size_t	j;
 
 	if (!str || str[0] == '\0')
 		return (free(str), NULL);
-	i = find_line_ending(str, 0);
-	new_str = (char *)ft_calloc(sizeof(char), (ft_strlen(str) - i + 1));
+	line_end = find_line_ending(str, 0);
+	new_str = (char *)ft_calloc(sizeof(char), (ft_strlen(str) - line_end + 1));
 	if (!new_str)
 		return (free(new_str), NULL);
-	j = 0;
-	while (str[i])
-		new_str[j++] = str[i++];
+	i = 0;
+	while (str[line_end])
+		new_str[i++] = str[line_end++];
 	return (free(str), new_str);
 }
 
@@ -55,30 +55,37 @@ char	*get_string(char *str)
 char	*read_the_line(char *str)
 {
 	char	*line;
+	size_t	line_end;
 	size_t	i;
-	size_t	j;
 
-	i = 0;
+	line_end = 0;
 	if (!str || str[0] == '\0')
 		return (NULL);
-	i = find_line_ending(str, i);
-	line = (char *)ft_calloc(sizeof(char), i + 1);
+	line_end = find_line_ending(str, line_end);
+	line = (char *)ft_calloc(sizeof(char), line_end + 1);
 	if (!line)
 		return (NULL);
-	j = 0;
-	while (j < i)
+	i = 0;
+	while (i < line_end)
 	{
-		line[j] = str[j];
-		j++;
+		line[i] = str[i];
+		i++;
 	}
 	return (line);
 }
 
 char	*free_and_null(char *buff1, char *buff2)
 {
-	free(buff1);
-	free(buff2);
-	buff2 = NULL;
+	if (buff1)
+	{
+		free(buff1);
+		buff1 = NULL;
+	}
+	if (buff2)
+	{
+		free(buff2);
+		buff2 = NULL;
+	}
 	return (0);
 }
 
