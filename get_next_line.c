@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:47:48 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/21 19:37:46 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 19:43:51 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,10 @@ char	*read_the_line(char *str)
 	return (line);
 }
 
+/// @brief This function permits the release of to blocks of memory in one call.
+/// @param buff1 One buffer
+/// @param buff2 Other buffer
+/// @return Returns 0 so the static variable can have a 
 char	*free_and_null(char *buff1, char *buff2)
 {
 	if (buff1)
@@ -86,7 +90,7 @@ char	*free_and_null(char *buff1, char *buff2)
 		free(buff2);
 		buff2 = NULL;
 	}
-	return (0);
+	return (NULL);
 }
 
 /// @brief Reads a line until the '\n'.
