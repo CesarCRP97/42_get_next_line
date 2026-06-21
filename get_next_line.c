@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:47:48 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/21 19:43:51 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 20:18:19 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ char	*get_next_line(int fd)
 
 	read_bytes = 1;
 	if ((fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX))
-		return (free(read_buffer), NULL);
+		return (NULL);
 	read_content = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!read_content)
-		return (free(read_buffer), NULL);
+		return (free_and_null(read_buffer, NULL));
 	while (!(ft_strchr(read_buffer, '\n')) && read_bytes != 0)
 	{
 		read_bytes = read(fd, read_content, BUFFER_SIZE);
