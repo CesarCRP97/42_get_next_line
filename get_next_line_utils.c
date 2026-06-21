@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 13:10:44 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/19 13:10:49 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 18:39:18 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,27 @@ char	*ft_strjoin(char *buffer, char *content)
 	result[i] = '\0';
 	free(buffer);
 	return (result);
+}
+
+void	*ft_calloc(size_t size, size_t nmemb)
+{
+	void			*ptr;
+	unsigned char	*to_char;
+	size_t			i;
+	size_t			n_bytes;
+
+	if (nmemb != 0 && size > (size_t) - 1 / nmemb)
+		return (NULL);
+	n_bytes = nmemb * size;
+	ptr = malloc(n_bytes);
+	if (!ptr)
+		return (NULL);
+	to_char = (unsigned char *) ptr;
+	i = 0;
+	while (i < n_bytes)
+	{
+		to_char[i] = '\0';
+		i++;
+	}
+	return (ptr);
 }

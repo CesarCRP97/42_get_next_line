@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 10:48:15 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/19 15:14:11 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 18:39:46 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ size_t	ft_strlen(const char *str);
 char	*ft_strchr(const char *str, int c);
 char	*ft_strdup(const char *src);
 char	*ft_strjoin(char *s1, char *s2);
+void	*ft_calloc(size_t size, size_t nmemb);
 
 #endif
