@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 15:15:05 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/21 19:52:54 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/21 19:57:37 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,10 @@ char	*free_and_null(char *buff1, char *buff2)
 	return (NULL);
 }
 
+/// @brief Reads a line until the '\n'. It saves as many buffers as max quantity
+/// of file descriptors.
+/// @param fd file descriptor from where to read.
+/// @return The next line of selected fd.
 char	*get_next_line(int fd)
 {
 	static char	*read_buffer[MAX_FD];
