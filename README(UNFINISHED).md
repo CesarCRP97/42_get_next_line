@@ -202,12 +202,6 @@ The bonus implementation maintains an independent storage area for each file des
 * https://man7.org/linux/man-pages/man3/free.3p.html
 * https://man7.org/linux/man-pages/man2/open.2.html
 
-### Additional References
-
-* 42 get_next_line subject.
-* POSIX File Descriptor documentation.
-* The Linux Programming Interface (Michael Kerrisk).
-
 ### AI Usage
 
 Artificial Intelligence was used as a supporting tool for:
