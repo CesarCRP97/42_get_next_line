@@ -10,7 +10,6 @@ The function reads from a file or standard input (`stdin`) and returns the next 
 
 This project introduces several important concepts in C programming, including:
 
-* File descriptor manipulation.
 * Dynamic memory allocation.
 * Static variables.
 * Buffer management.
@@ -96,8 +95,6 @@ get_next_line(fd2);
 ```
 
 Each file descriptor maintains its own reading state, allowing independent and interleaved reads without losing track of the remaining content associated with each descriptor.
-
-This is achieved by storing separate buffers for each file descriptor.
 
 ---
 
@@ -223,7 +220,3 @@ Artificial Intelligence was used as a supporting tool for:
 The project design, implementation, debugging, testing, and validation were carried out by the author.
 
 ---
-
-## Author
-
-Developed as part of the **42 School** curriculum.
