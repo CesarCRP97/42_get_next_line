@@ -28,9 +28,9 @@ char	*get_next_line(int fd);
 char	*get_string(char *str);
 char	*read_the_line(char *str);
 char	*free_and_null(char *buff1, char *buff2);
+char	*extract_line(char **buffer);
 size_t	ft_strlen(const char *str);
 char	*ft_strchr(const char *str, int c);
-char	*ft_strdup(const char *src);
 char	*ft_strjoin(char *s1, char *s2);
 void	*ft_calloc(size_t size, size_t nmemb);
 

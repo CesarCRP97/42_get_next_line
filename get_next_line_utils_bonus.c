@@ -42,41 +42,17 @@ char	*ft_strchr(const char *str, int c)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *s)
-{
-	int		i;
-	int		j;
-	char	*str;
-
-	i = 0;
-	j = ft_strlen(s);
-	str = (char *)malloc(sizeof(*str) * (j + 1));
-	if (!str)
-		return (NULL);
-	while (i < j)
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
 char	*ft_strjoin(char *buffer, char *content)
 {
 	size_t	i;
 	size_t	j;
 	char	*result;
 
-	if (!buffer)
-		return (ft_strdup(content));
-	if (!content)
-		return (ft_strdup(buffer));
 	i = 0;
 	result = (char *)malloc(sizeof(char) * (ft_strlen(buffer)
 				+ ft_strlen(content)) + 1);
 	if (!result)
-		return (NULL);
+		return (free_and_null(buffer, NULL));
 	while (buffer && buffer[i])
 	{
 		result[i] = buffer[i];
@@ -88,6 +64,20 @@ char	*ft_strjoin(char *buffer, char *content)
 	result[i] = '\0';
 	free(buffer);
 	return (result);
+}
+
+char	*extract_line(char **buffer)
+{
+	char	*line;
+
+	line = read_the_line(*buffer);
+	if (!line)
+	{
+		*buffer = free_and_null(*buffer, NULL);
+		return (NULL);
+	}
+	*buffer = get_string(*buffer);
+	return (line);
 }
 
 void	*ft_calloc(size_t size, size_t nmemb)

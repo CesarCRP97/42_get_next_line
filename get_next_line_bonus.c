@@ -6,7 +6,7 @@
 /*   By: crubio-p <crubio-p@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 15:15:05 by crubio-p          #+#    #+#             */
-/*   Updated: 2026/06/24 12:07:53 by crubio-p         ###   ########.fr       */
+/*   Updated: 2026/06/24 13:03:25 by crubio-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,16 @@ char	*get_string(char *str)
 	if (!str || str[0] == '\0')
 		return (free_and_null(str, NULL));
 	line_end = find_line_ending(str, 0);
-	new_str = (char *)ft_calloc(sizeof(char), (ft_strlen(str) - line_end + 1));
+	if (str[line_end] == '\0')
+		return (free_and_null(str, NULL));
+	new_str = ft_calloc(ft_strlen(str) - line_end + 1, sizeof(char));
 	if (!new_str)
-		return (free(new_str), NULL);
+		return (free_and_null(str, NULL));
 	i = 0;
 	while (str[line_end])
 		new_str[i++] = str[line_end++];
-	return (free(str), new_str);
+	free(str);
+	return (new_str);
 }
 
 /// @brief Reads the first line from the 'str'.
@@ -99,7 +102,7 @@ char	*free_and_null(char *buff1, char *buff2)
 /// @return The next line of selected fd.
 char	*get_next_line(int fd)
 {
-	static char	*read_buffer[MAX_FD];
+	static char	*r_buffer[MAX_FD];
 	char		*read_content;
 	int			read_bytes;
 
@@ -108,20 +111,17 @@ char	*get_next_line(int fd)
 		return (NULL);
 	read_content = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!read_content)
-		return (read_buffer[fd] = free_and_null(read_buffer[fd], NULL));
-	while (!(ft_strchr(read_buffer[fd], '\n')) && read_bytes != 0)
+		return (r_buffer[fd] = free_and_null(r_buffer[fd], NULL));
+	while (!(ft_strchr(r_buffer[fd], '\n')) && read_bytes != 0)
 	{
 		read_bytes = read(fd, read_content, BUFFER_SIZE);
 		if (read_bytes == -1)
-		{
-			read_buffer[fd] = free_and_null(read_content, read_buffer[fd]);
-			return (NULL);
-		}
+			return (r_buffer[fd] = free_and_null(read_content, r_buffer[fd]));
 		read_content[read_bytes] = '\0';
-		read_buffer[fd] = ft_strjoin(read_buffer[fd], read_content);
+		r_buffer[fd] = ft_strjoin(r_buffer[fd], read_content);
+		if (!r_buffer[fd])
+			return (free_and_null(read_content, NULL));
 	}
 	free(read_content);
-	read_content = read_the_line(read_buffer[fd]);
-	read_buffer[fd] = get_string(read_buffer[fd]);
-	return (read_content);
+	return (extract_line(&r_buffer[fd]));
 }
